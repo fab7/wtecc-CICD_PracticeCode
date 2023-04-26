@@ -1,14 +1,30 @@
 name: CI workflow
 
 on:
-  push:         # Event Trigger-1
+  push: # Event Trigger-1
     branches: [ "main" ]
   pull_request: # Event Trigger-2
     branches: [ "main" ]
 
 jobs:
-  build:        # Job-1
+  build:  # Job-1
     runs-on: "ubuntu-latest"  # Runner
     container: python:3.9-slim  # Target
+    steps:  # Steps-1.x
+      - name: S1.1 - Checkout from repository
+        uses: actions/checkout@v3
 
+      - name: S1.2 - Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: S1.3 - Lint with flake8
+        run: |
+          flake8 service --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 service --count --max-complexity=10 --max-line-length=127 --statistics
+
+      - name: S1.4 - Run unit tests with nose
+        run: 
+          nosetests -v --with-spec --spec-color --with-coverage --cover-package=app
 
