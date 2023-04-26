@@ -1,0 +1,14 @@
+name: CI workflow
+
+on:
+  push:         # Event Trigger-1
+    branches: [ "main" ]
+  pull_request: # Event Trigger-2
+    branches: [ "main" ]
+
+jobs:
+  build:        # Job-1
+    runs-on: "ubuntu-latest"  # Runner
+    container: python:3.9-slim  # Target
+
+
